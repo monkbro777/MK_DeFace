@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+            position: relative; /* Needed for absolute positioning of the button */
+        }
+
+        h1 {
+            color: green;
+        }
+
+        p {
+            color: orange;
+        }
+
+        .animated {
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: .15em solid orange; /* Cursor effect */
+            width: 0;
+            animation: typing 5s steps(40) infinite, blink-caret 0.75s step-end infinite; /* Animation loops */
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink-caret {
+            from, to {
+                border-color: transparent;
+            }
+            50% {
+                border-color: orange;
+            }
+        }
+
+        /* Centre message animation and styling */
+        .centre-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Creepster', cursive; /* Horror-style font */
+            font-size: 30px;
+            color: red; /* Red color for text */
+            max-width: 80%;
+            text-align: center;
+            white-space: normal;
+            overflow: hidden;
+            display: inline-block;
+            border-right: .1em solid red;
+            width: 0;
+            animation: typing 10s steps(2000) infinite, blink-caret 0.75s step-end infinite;
+        }
+
+        /* Position the music player at the bottom */
+        audio {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .contact-button {
+            position: absolute;
+            bottom: 60px; /* Placing the contact button above the audio player */
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #0088cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+        }
+
+        .contact-button:hover {
+            background-color: #006f99;
+        }
+    </style>
+</head>
+<body>
+    <h1> TOOL BY MK DEVELOPER 
+CREATE YOUR DEFACE PAGE</h1>
+    
+    <label for="background-image">Select Background Image:</label>
+    <input type="file" id="background-image" accept="image/*"><br><br>
+    
+    <label for="music-file">Select Music File:</label>
+    <input type="file" id="music-file" accept="audio/*"><br><br>
+
+    <label for="headline-input">Enter Headline:</label>
+    <input type="text" id="headline-input"><br><br>
+
+    <label for="description-input">Enter Description 30 Words:</label>
+    <textarea id="description-input"></textarea><br><br>
+
+    <label for="centre-message-input">Enter Centre Message (max 2000 words):</label>
+    <textarea id="centre-message-input" placeholder="Enter the message you want to show in the center of the page..."></textarea><br><br>
+
+    <button onclick="createPage()">Create</button>
+
+    <script>
+        function createPage() {
+            const bgImage = document.getElementById('background-image').files[0];
+            const musicFile = document.getElementById('music-file').files[0];
+            const headline = document.getElementById('headline-input').value;
+            const description = document.getElementById('description-input').value;
+            const centreMessage = document.getElementById('centre-message-input').value;
+
+            if (!bgImage || !musicFile || !headline || !description || !centreMessage) {
+                alert("Please fill all fields!");
+                return;
+            }
+
+            // Limit the center message to 2000 words
+            const wordCount = centreMessage.split(/\s+/).length;
+            if (wordCount > 2000) {
+                alert("Your Centre Message is too long. Please limit it to 2000 words.");
+                return;
+            }
+
+            const readerBgImage = new FileReader();
+            const readerMusicFile = new FileReader();
+
+            readerBgImage.onload = function(e) {
+                const bgImageUrl = e.target.result;
+
+                readerMusicFile.onload = function(e) {
+                    const musicUrl = e.target.result;
+
+                    const htmlContent = `
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <title>${headline}</title>
+                            <style>
+                                body {
+                                    background-image: url('${bgImageUrl}');
+                                    background-size: cover;
+                                    color: white;
+                                    text-align: center;
+                                    padding: 50px;
+                                }
+
+                                h1 {
+                                    color: green;
+                                }
+
+                                p {
+                                    color: orange;
+                                }
+
+                                .animated {
+                                    display: inline-block;
+                                    white-space: nowrap;
+                                    overflow: hidden;
+                                    border-right: .15em solid orange;
+                                    width: 0;
+                                    animation: typing 5s steps(40) infinite, blink-caret 0.75s step-end infinite;
+                                }
+
+                                @keyframes typing {
+                                    from {
+                                        width: 0;
+                                    }
+                                    to {
+                                        width: 100%;
+                                    }
+                                }
+
+                                @keyframes blink-caret {
+                                    from, to {
+                                        border-color: transparent;
+                                    }
+                                    50% {
+                                        border-color: orange;
+                                    }
+                                }
+
+                                .centre-message {
+                                    position: absolute;
+                                    top: 50%;
+                                    left: 50%;
+                                    transform: translate(-50%, -50%);
+                                    font-family: 'Creepster', cursive; /* Horror-style font */
+                                    font-size: 30px;
+                                    color: red; /* Red color for text */
+                                    max-width: 80%;
+                                    text-align: center;
+                                    white-space: normal;
+                                    overflow: hidden;
+                                    display: inline-block;
+                                    border-right: .1em solid red;
+                                    width: 0;
+                                    animation: typing 10s steps(2000) infinite, blink-caret 0.75s step-end infinite;
+                                }
+
+                                audio {
+                                    position: fixed;
+                                    bottom: 10px;
+                                    left: 50%;
+                                    transform: translateX(-50%);
+                                }
+
+                                .contact-button {
+                                    position: absolute;
+                                    bottom: 60px;
+                                    left: 50%;
+                                    transform: translateX(-50%);
+                                    margin-top: 20px;
+                                    padding: 10px 20px;
+                                    background-color: #0088cc;
+                                    color: white;
+                                    border: none;
+                                    cursor: pointer;
+                                    font-size: 16px;
+                                    text-decoration: none;
+                                }
+
+                                .contact-button:hover {
+                                    background-color: #006f99;
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <h1>${headline}</h1>
+                            <p class="animated">${description}</p>
+                            <div class="centre-message">${centreMessage}</div>
+                            <audio controls>
+                                <source src="${musicUrl}" type="audio/mpeg">
+                                Your browser does not support the audio tag.
+                            </audio>
+                            <a href="https://t.me/official_monk_developer" class="contact-button" target="_blank">Contact on Telegram</a>
+                        </body>
+                        </html>
+                    `;
+
+                    const blob = new Blob([htmlContent], { type: 'text/html' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'index.html';
+
+                    a.click();
+                    URL.revokeObjectURL(url);
+                }
+
+                readerMusicFile.readAsDataURL(musicFile);
+            }
+
+            readerBgImage.readAsDataURL(bgImage);
+        }
+    </script>
+</body>
+</html>
